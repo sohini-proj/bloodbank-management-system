@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Donor - Blood Bank Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .nav-links {
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .form-container {
+            padding: 40px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        input, select, textarea {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .required {
+            color: #ef4444;
+        }
+        .form-note {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>➕ Add New Donor</h1>
+            <p>Register a new blood donor</p>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}">🏠 Home</a>
+                <a href="{{ url_for('donors') }}">👥 View Donors</a>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="form-note">
+                <strong>📝 Note:</strong> Please fill in all required fields marked with <span class="required">*</span> to register the donor.
+            </div>
+            
+            <form method="POST">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="first_name">First Name <span class="required">*</span></label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name <span class="required">*</span></label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dob">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender <span class="required">*</span></label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="blood_type_id">Blood Type</label>
+                        <select id="blood_type_id" name="blood_type_id">
+                            <option value="">Select Blood Type</option>
+                            {% for blood_type in blood_types %}
+                            <option value="{{ blood_type[0] }}">{{ blood_type[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number</label>
+                        <input type="tel" id="contact_number" name="contact_number" placeholder="e.g., 555-1234">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="e.g., donor@email.com">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" placeholder="Enter full address"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registration_date">Registration Date <span class="required">*</span></label>
+                        <input type="date" id="registration_date" name="registration_date" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">✅ Register Donor</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default for registration date
+        document.getElementById('registration_date').valueAsDate = new Date();
+        
+        // Validate age (donors should be at least 16 years old)
+        document.getElementById('dob').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            if (age < 16) {
+                alert('Donor must be at least 16 years old.');
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

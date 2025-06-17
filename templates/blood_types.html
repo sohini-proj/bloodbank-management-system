@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Types - Blood Bank Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .nav-links {
+            margin-top: 20px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            margin: 0 10px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .content {
+            padding: 40px;
+        }
+        .blood-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .blood-type-card {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 2px solid #fecaca;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .blood-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #dc2626, #ef4444, #f87171);
+        }
+        .blood-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(220, 38, 38, 0.2);
+            border-color: #dc2626;
+        }
+        .blood-type-icon {
+            font-size: 3rem;
+            color: #dc2626;
+            margin-bottom: 15px;
+        }
+        .blood-type-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        .blood-type-id {
+            font-size: 0.9rem;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .info-section {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .info-section h3 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .compatibility-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .compatibility-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .compatibility-card h4 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        .compatibility-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .compatibility-item {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #374151;
+        }
+        .stats strong {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🩸 Blood Types</h1>
+            <p>All available blood types in the system</p>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}">🏠 Home</a>
+                <a href="{{ url_for('inventory') }}">📦 Inventory</a>
+                <a href="{{ url_for('donors') }}">👥 Donors</a>
+            </div>
+        </div>
+        
+        <div class="content">
+            {% if blood_types %}
+            <div class="stats">
+                <span>Total Blood Types Available: <strong>{{ blood_types|length }}</strong></span>
+            </div>
+            
+            <div class="info-section">
+                <h3>📋 Blood Type Information</h3>
+                <p>The ABO blood group system is the most important blood-typing system in medical practice. Each blood type has specific compatibility rules for donations and transfusions.</p>
+                
+                <div class="compatibility-info">
+                    <div class="compatibility-card">
+                        <h4>🅾️ Universal Donor</h4>
+                        <p><strong>O-</strong> can donate to all blood types</p>
+                    </div>
+                    <div class="compatibility-card">
+                        <h4>🆎 Universal Recipient</h4>
+                        <p><strong>AB+</strong> can receive from all blood types</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="blood-types-grid">
+                {% for blood_type in blood_types %}
+                <div class="blood-type-card">
+                    <div class="blood-type-icon">🩸</div>
+                    <div class="blood-type-name">{{ blood_type[1] }}</div>
+                    <div class="blood-type-id">ID: {{ blood_type[0] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="info-section" style="margin-top: 40px;">
+                <h3>🔬 Blood Type Compatibility Guide</h3>
+                <div style="overflow-x: auto; margin-top: 20px;">
+                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;">
+                        <thead>
+                            <tr style="background: #1f2937; color: white;">
+                                <th style="padding: 15px; text-align: left;">Blood Type</th>
+                                <th style="padding: 15px; text-align: left;">Can Donate To</th>
+                                <th style="padding: 15px; text-align: left;">Can Receive From</th>
+                                <th style="padding: 15px; text-align: left;">Frequency</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">O+</td>
+                                <td style="padding: 12px;">O+, A+, B+, AB+</td>
+                                <td style="padding: 12px;">O+, O-</td>
+                                <td style="padding: 12px;">38%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">O-</td>
+                                <td style="padding: 12px;">All types (Universal)</td>
+                                <td style="padding: 12px;">O-</td>
+                                <td style="padding: 12px;">7%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">A+</td>
+                                <td style="padding: 12px;">A+, AB+</td>
+                                <td style="padding: 12px;">A+, A-, O+, O-</td>
+                                <td style="padding: 12px;">34%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">A-</td>
+                                <td style="padding: 12px;">A+, A-, AB+, AB-</td>
+                                <td style="padding: 12px;">A-, O-</td>
+                                <td style="padding: 12px;">6%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">B+</td>
+                                <td style="padding: 12px;">B+, AB+</td>
+                                <td style="padding: 12px;">B+, B-, O+, O-</td>
+                                <td style="padding: 12px;">9%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">B-</td>
+                                <td style="padding: 12px;">B+, B-, AB+, AB-</td>
+                                <td style="padding: 12px;">B-, O-</td>
+                                <td style="padding: 12px;">2%</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">AB+</td>
+                                <td style="padding: 12px;">AB+</td>
+                                <td style="padding: 12px;">All types (Universal)</td>
+                                <td style="padding: 12px;">3%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; font-weight: 600; color: #dc2626;">AB-</td>
+                                <td style="padding: 12px;">AB+, AB-</td>
+                                <td style="padding: 12px;">AB-, A-, B-, O-</td>
+                                <td style="padding: 12px;">1%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            {% else %}
+            <div class="no-data">
+                <h3>No blood types found</h3>
+                <p>Please check your database configuration.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

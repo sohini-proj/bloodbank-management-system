@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+        .nav-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 4px solid;
+        }
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .nav-card.donors { border-color: #3b82f6; }
+        .nav-card.blood-types { border-color: #10b981; }
+        .nav-card.inventory { border-color: #f59e0b; }
+        .nav-card.donations { border-color: #ef4444; }
+        .nav-card.recipients { border-color: #8b5cf6; }
+        .nav-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .nav-card.donors .icon { color: #3b82f6; }
+        .nav-card.blood-types .icon { color: #10b981; }
+        .nav-card.inventory .icon { color: #f59e0b; }
+        .nav-card.donations .icon { color: #ef4444; }
+        .nav-card.recipients .icon { color: #8b5cf6; }
+        .nav-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+        .nav-card p {
+            color: #6b7280;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .nav-card a {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        .nav-card a:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🩸 Blood Bank Management System</h1>
+            <p>Saving Lives Through Efficient Blood Management</p>
+        </div>
+        
+        <div class="nav-grid">
+            <div class="nav-card donors">
+                <div class="icon">👥</div>
+                <h3>Manage Donors</h3>
+                <p>Register new donors, view donor information, and manage donor records</p>
+                <a href="{{ url_for('donors') }}">View Donors</a>
+            </div>
+            
+            <div class="nav-card blood-types">
+                <div class="icon">🩸</div>
+                <h3>Blood Types</h3>
+                <p>View all available blood types in the system</p>
+                <a href="{{ url_for('blood_types') }}">View Blood Types</a>
+            </div>
+            
+            <div class="nav-card inventory">
+                <div class="icon">📦</div>
+                <h3>Blood Inventory</h3>
+                <p>Monitor blood stock levels and availability by blood type</p>
+                <a href="{{ url_for('inventory') }}">View Inventory</a>
+            </div>
+            
+            <div class="nav-card donations">
+                <div class="icon">❤️</div>
+                <h3>Donations</h3>
+                <p>Record new donations and view donation history</p>
+                <a href="{{ url_for('donations') }}">View Donations</a>
+            </div>
+            
+            <div class="nav-card recipients">
+                <div class="icon">🏥</div>
+                <h3>Recipients</h3>
+                <p>Manage blood recipients and transfusion records</p>
+                <a href="{{ url_for('recipients') }}">View Recipients</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Blood Bank Management System. Made with ❤️ for saving lives.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Recipient - Blood Bank Management</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .nav-links { margin-top: 20px; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.3); }
+        .form-container { padding: 40px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        label { font-weight: 600; margin-bottom: 8px; color: #374151; }
+        input, select {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ef4444;
+        }
+        .btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .required { color: #ef4444; }
+        .form-note {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 6px 6px 0;
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>➕ Add Recipient</h1>
+            <p>Record a new blood recipient</p>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}">🏠 Home</a>
+                <a href="{{ url_for('recipients') }}">❤️ View Recipients</a>
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="form-note">
+                <strong>📝 Note:</strong> Please fill in all required fields marked with <span class="required">*</span> to record the recipient.
+            </div>
+            <form method="POST" action="{{ url_for('add_recipient') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="first_name">First Name <span class="required">*</span></label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name <span class="required">*</span></label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_number">Contact Number <span class="required">*</span></label>
+                        <input type="text" id="contact_number" name="contact_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="blood_type_id">Blood Type <span class="required">*</span></label>
+                        <select id="blood_type_id" name="blood_type_id" required>
+                            <option value="">Select Blood Type</option>
+                            {% for blood_type in blood_types %}
+                            <option value="{{ blood_type[0] }}">{{ blood_type[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="received_date">Received Date <span class="required">*</span></label>
+                        <input type="date" id="received_date" name="received_date" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">✅ Record Recipient</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Set today's date as default for received date
+        document.getElementById('received_date').valueAsDate = new Date();
+    </script>
+</body>
+</html> 
